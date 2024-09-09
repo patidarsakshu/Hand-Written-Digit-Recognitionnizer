@@ -98,13 +98,6 @@ The model is trained with data augmentation to prevent overfitting:
 The model achieves an accuracy of 99.671% on the MNIST test dataset. The results are saved in a CSV file for submission.
 **How to Run**
 
-    Clone the Repository:
-
-    bash
-
-git clone https://github.com/your-username/handwritten-digit-recognition.git
-cd handwritten-digit-recognition
-
 **Install Dependencies**
 
 bash
