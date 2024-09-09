@@ -1,43 +1,140 @@
 # Hand-Written-Digit-Recognitionnizer
 
-Introduction
+# Handwritten Digit Recognition with CNN
 
-This project involves creating a 5-layer Sequential Convolutional Neural Network (CNN) to recognize handwritten digits using the MNIST dataset. The model is built with the Keras API (using a TensorFlow backend), known for its user-friendly and intuitive interface. The project focuses on data preparation, model definition, training, evaluation, and prediction.
-1. Data Preparation
-1.1 Load Data
-The first step involves loading the MNIST dataset, which contains 60,000 training images and 10,000 test images of handwritten digits (0-9).
+## Overview
+This project implements a Convolutional Neural Network (CNN) for handwritten digit recognition using the MNIST dataset. The model is built with Keras and TensorFlow, achieving an accuracy of 99.671% on the test data. This repository includes code for data preparation, model training, and result prediction.
 
-1.2 Check for Null and Missing Values
-Before processing, it’s crucial to check for any null or missing values to ensure data integrity and prevent errors during training.
+## Table of Contents
+- [Project Structure](#project-structure)
+- [Data Preparation](#data-preparation)
+- [Model Architecture](#model-architecture)
+- [Training the Model](#training-the-model)
+- [Results](#results)
+- [How to Run](#how-to-run)
+- [Dependencies](#dependencies)
+- [References](#references)
 
-1.3 Normalization
-Normalization scales the pixel values (0-255) to the range 0-1. This step is essential for faster convergence of the CNN during training.
-1.4 Reshape
-The data is reshaped to fit the input shape required by the CNN. For MNIST, each image is 28x28 pixels, and reshaping ensures that the model receives the data in the correct format.
-1.5 Label Encoding
-The labels (digits 0-9) are one-hot encoded to facilitate multi-class classification.
-1.6 Split Training and Validation Set
-The data is split into training and validation sets to evaluate the model's performance on unseen data during training.
+## Project Structure
+- `data/`: Contains the dataset files (`train.csv` and `test.csv`).
+- `notebooks/`: Jupyter notebooks for exploratory data analysis and model evaluation.
+- `src/`: Contains Python scripts for data preprocessing, model definition, and training.
+- `results/`: Contains the output predictions and submission files.
+- `README.md`: This file.
+
+## Data Preparation
+The MNIST dataset is loaded from CSV files and preprocessed as follows:
+1. **Loading Data:**
+   ```python
+   import pandas as pd
+   
+   train = pd.read_csv("data/train.csv")
+   test = pd.read_csv("data/test.csv")
+
+ 2.  Normalization and Reshaping:
 
 
-2. Convolutional Neural Network (CNN)
-2.1 Define the Model
-The CNN model is defined with 5 layers, including convolutional layers, pooling layers, and dense (fully connected) layers. Each layer has specific functions, such as feature extraction and classification.
-2.2 Set the Optimizer and Annealer
-An optimizer (like Adam) is chosen to minimize the loss function, and an annealer (learning rate scheduler) is set to adjust the learning rate during training for better convergence.
-2.3 Data Augmentation
-Data augmentation techniques (like rotation, zoom, and shift) are applied to the training data to increase the diversity and robustness of the model.
+    X_train = train.drop(labels=["label"], axis=1) / 255.0
+    Y_train = pd.get_dummies(train["label"])
+    X_train = X_train.values.reshape(-1, 28, 28, 1)
+    test = test / 255.0
+    test = test.values.reshape(-1, 28, 28, 1)
 
+3. Model Architecture
 
-3. Evaluate the Model
-3.1 Training and Validation Curves
-Training and validation curves (accuracy and loss) are plotted to monitor the model's performance and detect overfitting or underfitting during training.
-3.2 Confusion Matrix
-A confusion matrix is generated to visualize the model's performance in terms of true positives, true negatives, false positives, and false negatives.
+The CNN model is defined with the following layers:
 
-4. Prediction and Submission
-4.1 Predict and Submit Results
-The trained model is used to predict the labels of the test dataset. The predictions are then formatted according to the required submission format for evaluation.
-Results
+   1> Convolutional Layers:
+        Conv2D layers for feature extraction.
+        MaxPool2D for down-sampling.
+        Dropout for regularization.
+   2> Fully Connected Layers:
+        Dense layers for classification.
 
-The CNN achieved an impressive accuracy of 99.671% on the validation set, trained in approximately 2 hours and 30 minutes on a single CPU (i5 2500k). For users with GPUs with compute capability >= 3.0 (e.g., GTX 650 and newer), using TensorFlow-GPU with Keras will significantly speed up the computation process.
+python
+
+from keras.models import Sequential
+from keras.layers import Conv2D, MaxPool2D, Dropout, Flatten, Dense
+
+model = Sequential([
+    Conv2D(32, (5,5), activation='relu', input_shape=(28,28,1), padding='same'),
+    Conv2D(32, (5,5), activation='relu', padding='same'),
+    MaxPool2D(pool_size=(2,2)),
+    Dropout(0.25),
+    Conv2D(64, (3,3), activation='relu', padding='same'),
+    Conv2D(64, (3,3), activation='relu', padding='same'),
+    MaxPool2D(pool_size=(2,2)),
+    Dropout(0.25),
+    Flatten(),
+    Dense(256, activation='relu'),
+    Dropout(0.5),
+    Dense(10, activation='softmax')
+])
+
+4. Training the Model
+
+The model is trained with data augmentation to prevent overfitting:
+
+  5. Data Augmentation:
+
+    python
+
+from keras.preprocessing.image import ImageDataGenerator
+
+datagen = ImageDataGenerator(
+    rotation_range=10,
+    zoom_range=0.1,
+    width_shift_range=0.1,
+    height_shift_range=0.1
+)
+datagen.fit(X_train)
+
+6. Model Training:
+
+python
+
+    model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+    history = model.fit(datagen.flow(X_train, Y_train, batch_size=86),
+                        epochs=1,
+                        validation_split=0.1,
+                        verbose=2)
+
+7. Results
+
+The model achieves an accuracy of 99.671% on the MNIST test dataset. The results are saved in a CSV file for submission.
+**How to Run**
+
+    Clone the Repository:
+
+    bash
+
+git clone https://github.com/your-username/handwritten-digit-recognition.git
+cd handwritten-digit-recognition
+
+**Install Dependencies**
+
+bash
+
+pip install -r requirements.txt
+
+Run the Jupyter Notebook:
+
+bash
+
+    jupyter notebook notebooks/model_evaluation.ipynb
+
+Dependencies
+
+    keras
+    tensorflow
+    pandas
+    numpy
+    matplotlib
+    scikit-learn
+
+References
+
+    MNIST Dataset
+    Keras Documentation
+    TensorFlow Documentation
+
