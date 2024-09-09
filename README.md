@@ -52,10 +52,10 @@ The CNN model is defined with the following layers:
         Dense layers for classification.
 
 
-from keras.models import Sequential
-from keras.layers import Conv2D, MaxPool2D, Dropout, Flatten, Dense
+    from keras.models import Sequential
+    from keras.layers import Conv2D, MaxPool2D, Dropout, Flatten, Dense
 
-model = Sequential([
+    model = Sequential([
     Conv2D(32, (5,5), activation='relu', input_shape=(28,28,1), padding='same'),
     Conv2D(32, (5,5), activation='relu', padding='same'),
     MaxPool2D(pool_size=(2,2)),
@@ -68,7 +68,8 @@ model = Sequential([
     Dense(256, activation='relu'),
     Dropout(0.5),
     Dense(10, activation='softmax')
-])
+    ])
+
 
 4. Training the Model
 
@@ -76,21 +77,17 @@ The model is trained with data augmentation to prevent overfitting:
 
   5. Data Augmentation:
 
-    python
+  from keras.preprocessing.image import ImageDataGenerator
 
-from keras.preprocessing.image import ImageDataGenerator
-
-datagen = ImageDataGenerator(
+    datagen = ImageDataGenerator(
     rotation_range=10,
     zoom_range=0.1,
     width_shift_range=0.1,
     height_shift_range=0.1
-)
-datagen.fit(X_train)
+    )
+    datagen.fit(X_train)
 
 6. Model Training:
-
-python
 
     model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
     history = model.fit(datagen.flow(X_train, Y_train, batch_size=86),
