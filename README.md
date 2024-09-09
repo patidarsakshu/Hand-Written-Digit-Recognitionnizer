@@ -44,14 +44,13 @@ The MNIST dataset is loaded from CSV files and preprocessed as follows:
 
 The CNN model is defined with the following layers:
 
-   1> Convolutional Layers:
+   3.1. Convolutional Layers:
         Conv2D layers for feature extraction.
         MaxPool2D for down-sampling.
         Dropout for regularization.
-   2> Fully Connected Layers:
+   3.2.  Fully Connected Layers:
         Dense layers for classification.
 
-python
 
 from keras.models import Sequential
 from keras.layers import Conv2D, MaxPool2D, Dropout, Flatten, Dense
