@@ -91,9 +91,7 @@ The model is trained with data augmentation to prevent overfitting:
 
     model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
     history = model.fit(datagen.flow(X_train, Y_train, batch_size=86),
-                        epochs=1,
-                        validation_split=0.1,
-                        verbose=2)
+    epochs=1, validation_split=0.1, verbose=2)
 
 7. Results
 
