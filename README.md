@@ -1,6 +1,6 @@
 # Hand-Written-Digit-Recognitionnizer
 
-# Handwritten Digit Recognition with CNN
+This repository contains code for handwriting recognition using Convolutional Neural Networks (CNN). The implementation is based on deep learning models to classify writers based on their individual writing styles. The IAM Handwriting Dataset is utilized for training and testing the models.
 
 ## Overview
 This project implements a Convolutional Neural Network (CNN) for handwritten digit recognition using the MNIST dataset. The model is built with Keras and TensorFlow, achieving an accuracy of 99.671% on the test data. This repository includes code for data preparation, model training, and result prediction.
