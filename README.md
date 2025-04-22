@@ -1,5 +1,4 @@
-# Hand-Written-Digit-Recognitionnizer
-
+# Hand-Written-Digit-Recognitionizer
 This repository contains code for handwriting recognition using Convolutional Neural Networks (CNN). The implementation is based on deep learning models to classify writers based on their individual writing styles. The IAM Handwriting Dataset is utilized for training and testing the models.
 
 ## Overview
